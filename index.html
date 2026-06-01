@@ -1196,13 +1196,22 @@
         }, 1800);
       }
 
-      function track(action) {
-        if (window.umami) {
+      function track(action){
+        if(window.umami){
           window.umami.track(action);
         }
 
         console.log("Tracking ready:", action);
       }
+
+      let hasTrackedScroll = false;
+
+      window.addEventListener("scroll", () => {
+        if(!hasTrackedScroll){
+          hasTrackedScroll = true;
+          track("real_scroll");
+        }
+      }, { passive: true });
 
       document.querySelectorAll("[data-track]").forEach((element) => {
         element.addEventListener("click", () => {
