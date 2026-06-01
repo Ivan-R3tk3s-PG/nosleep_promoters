@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No Sleep In The City – Jegyek promóterektől</title>
+
+  <style>
+    :root{
+      --yellow:#ffd51f;
+      --orange:#ff7a1a;
+      --red:#ef1b2d;
+      --green:#0aa65b;
+      --black:#09090d;
+      --white:#fffaf0;
+      --muted:#2b2412;
+      --shadow: 10px 10px 0 rgba(239,27,45,.95);
+      --radius: 26px;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      font-family: Impact, Haettenschweiler, "Arial Narrow Bold", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,.55), transparent 20%),
+        linear-gradient(135deg, #ffe94c 0%, var(--yellow) 38%, var(--orange) 100%);
+      color:var(--black);
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background-image:
+        linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
+      background-size:80px 80px;
+      mix-blend-mode:soft-light;
+      z-index:0;
+    }
+
+    .noise{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:1;
+      opacity:.12;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(0,0,0,.08) 0px,
+          rgba(0,0,0,.08) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+    }
+
+    .shape{
+      position:fixed;
+      z-index:0;
+      pointer-events:none;
+      opacity:.85;
+      filter:drop-shadow(0 20px 20px rgba(0,0,0,.12));
+    }
+
+    .leaf{
+      width:240px;
+      height:120px;
+      border-radius:100% 0 100% 0;
+      background:linear-gradient(135deg, #007a3d, #3bd16e);
+    }
+
+    .leaf.one{
+      top:155px;
+      left:-90px;
+      transform:rotate(-32deg);
+    }
+
+    .leaf.two{
+      bottom:35px;
+      right:-75px;
+      transform:rotate(25deg);
+    }
+
+    .leaf.three{
+      top:390px;
+      right:-80px;
+      background:linear-gradient(135deg, #ef1b2d, #ff8a2a);
+      transform:rotate(10deg);
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      width:min(1120px, calc(100% - 32px));
+      margin:0 auto;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      padding:18px 0;
+      backdrop-filter: blur(18px);
+      background:rgba(255,213,31,.58);
+      border-bottom:1px solid rgba(0,0,0,.08);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      text-decoration:none;
+      color:var(--black);
+      min-width:0;
+    }
+
+    .brand-icon{
+      width:64px;
+      height:64px;
+      border:6px solid var(--white);
+      border-radius:20px;
+      background:var(--black);
+      box-shadow:8px 8px 0 var(--red);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      transform:rotate(-6deg);
+    }
+
+    .brand-icon span{
+      color:var(--yellow);
+      font-size:31px;
+    }
+
+    .brand-title{
+      font-size:32px;
+      letter-spacing:-1px;
+      text-transform:uppercase;
+      text-shadow:3px 3px 0 var(--white);
+      line-height:.9;
+      white-space:nowrap;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .nav-links a,
+    .menu-btn{
+      border:none;
+      text-decoration:none;
+      color:var(--white);
+      background:var(--black);
+      padding:14px 19px;
+      border-radius:999px;
+      font-size:18px;
+      font-family:Arial, sans-serif;
+      font-weight:900;
+      box-shadow:5px 5px 0 var(--red);
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .nav-links a:hover,
+    .menu-btn:hover{
+      transform:translate(-2px,-2px);
+      box-shadow:8px 8px 0 var(--red);
+    }
+
+    .menu-btn{
+      display:none;
+    }
+
+    .mobile-menu{
+      display:none;
+      margin-top:16px;
+      background:rgba(9,9,13,.96);
+      border-radius:22px;
+      padding:14px;
+      box-shadow:8px 8px 0 var(--red);
+    }
+
+    .mobile-menu.open{
+      display:grid;
+      gap:10px;
+    }
+
+    .mobile-menu a{
+      color:var(--white);
+      text-decoration:none;
+      font-family:Arial, sans-serif;
+      font-weight:900;
+      padding:13px 15px;
+      border-radius:16px;
+      background:rgba(255,255,255,.08);
+    }
+
+    .hero{
+      min-height:auto;
+      padding:74px 0 46px;
+      display:grid;
+      align-items:center;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:34px;
+      align-items:center;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      background:var(--black);
+      color:var(--yellow);
+      padding:11px 16px;
+      border-radius:999px;
+      box-shadow:6px 6px 0 var(--red);
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      text-transform:uppercase;
+      margin-bottom:22px;
+    }
+
+    .main-title{
+      font-size:clamp(54px, 9vw, 118px);
+      line-height:.82;
+      text-transform:uppercase;
+      letter-spacing:-4px;
+      color:var(--white);
+      text-shadow:
+        5px 5px 0 var(--black),
+        11px 11px 0 var(--red);
+      margin-bottom:20px;
+    }
+
+    .festival{
+      display:inline-block;
+      background:var(--black);
+      color:var(--yellow);
+      padding:12px 18px;
+      transform:rotate(-1deg);
+      border-radius:10px;
+      font-size:clamp(28px, 4.5vw, 58px);
+      line-height:.95;
+      text-transform:uppercase;
+      box-shadow:9px 9px 0 var(--red);
+      margin-bottom:24px;
+    }
+
+    .hero-text{
+      font-family:Arial, sans-serif;
+      font-size:20px;
+      line-height:1.45;
+      max-width:650px;
+      font-weight:800;
+      color:#221600;
+      margin-bottom:24px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:9px;
+      text-decoration:none;
+      cursor:pointer;
+      background:var(--red);
+      color:var(--white);
+      padding:17px 24px;
+      border-radius:999px;
+      font-size:20px;
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      box-shadow:7px 7px 0 var(--black);
+      transition:.2s ease;
+    }
+
+    .btn:hover{
+      transform:translate(-2px,-2px);
+      box-shadow:10px 10px 0 var(--black);
+    }
+
+    .btn.secondary{
+      background:var(--white);
+      color:var(--black);
+    }
+
+    .event-card{
+      position:relative;
+      background:rgba(255,250,240,.88);
+      border:7px solid var(--black);
+      border-radius:var(--radius);
+      padding:22px;
+      box-shadow:var(--shadow);
+      transform:rotate(1.2deg);
+      overflow:hidden;
+    }
+
+    .event-card::before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(239,27,45,.18), transparent 22%),
+        radial-gradient(circle at 85% 80%, rgba(10,166,91,.18), transparent 25%);
+      z-index:-1;
+    }
+
+    .poster-frame{
+      background:var(--black);
+      color:var(--white);
+      border-radius:20px;
+      padding:24px;
+      min-height:430px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:20px;
+      overflow:hidden;
+    }
+
+    .poster-top{
+      display:grid;
+      gap:12px;
+    }
+
+    .date{
+      color:var(--yellow);
+      font-size:48px;
+      line-height:.88;
+      text-transform:uppercase;
+      text-shadow:4px 4px 0 var(--red);
+    }
+
+    .location{
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      font-size:22px;
+      background:var(--yellow);
+      color:var(--black);
+      padding:10px 12px;
+      border-radius:10px;
+      text-transform:uppercase;
+    }
+
+    .mini-lineup{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+    }
+
+    .mini-lineup span{
+      background:var(--red);
+      color:var(--white);
+      border-radius:999px;
+      padding:9px 12px;
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      font-size:15px;
+    }
+
+    .countdown{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    }
+
+    .time-box{
+      background:var(--white);
+      color:var(--black);
+      border-radius:14px;
+      padding:12px 7px;
+      text-align:center;
+      border:3px solid var(--yellow);
+    }
+
+    .time-box strong{
+      display:block;
+      font-size:31px;
+      line-height:1;
+    }
+
+    .time-box small{
+      font-family:Arial, sans-serif;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    section{
+      padding:48px 0;
+    }
+
+    .section-title{
+      display:inline-block;
+      font-size:clamp(38px, 6vw, 76px);
+      line-height:.85;
+      color:var(--white);
+      text-shadow:
+        4px 4px 0 var(--black),
+        9px 9px 0 var(--red);
+      margin-bottom:28px;
+      text-transform:uppercase;
+      letter-spacing:-2px;
+    }
+
+    .section-sub{
+      font-family:Arial, sans-serif;
+      font-weight:850;
+      color:#241700;
+      font-size:19px;
+      max-width:780px;
+      margin:-12px 0 28px;
+      line-height:1.45;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .info{
+      background:rgba(255,250,240,.9);
+      border:5px solid var(--black);
+      border-radius:23px;
+      padding:22px;
+      box-shadow:7px 7px 0 var(--red);
+    }
+
+    .info span{
+      display:block;
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      color:var(--red);
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .info strong{
+      display:block;
+      font-size:32px;
+      line-height:.95;
+      text-transform:uppercase;
+    }
+
+    .promoter-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:22px;
+    }
+
+    .promoter{
+      background:rgba(9,9,13,.96);
+      color:var(--white);
+      border-radius:var(--radius);
+      border:6px solid var(--white);
+      box-shadow:9px 9px 0 var(--red);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .promoter::after{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      right:-95px;
+      top:-95px;
+      background:radial-gradient(circle, rgba(255,213,31,.85), transparent 65%);
+      pointer-events:none;
+    }
+
+    .promoter h3{
+      font-size:42px;
+      line-height:.9;
+      margin-bottom:12px;
+      text-transform:uppercase;
+      position:relative;
+      z-index:1;
+    }
+
+    .promoter p{
+      font-family:Arial, sans-serif;
+      font-weight:800;
+      opacity:.86;
+      line-height:1.45;
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .socials{
+      display:grid;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+
+    .social-link{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      text-decoration:none;
+      color:var(--black);
+      background:var(--yellow);
+      padding:14px 15px;
+      border-radius:17px;
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      box-shadow:5px 5px 0 var(--red);
+      word-break:break-word;
+    }
+
+    .social-link.facebook{
+      background:var(--white);
+    }
+
+    .copy-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+      position:relative;
+      z-index:1;
+    }
+
+    .copy-btn{
+      border:none;
+      background:var(--red);
+      color:var(--white);
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      padding:12px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      box-shadow:4px 4px 0 var(--yellow);
+    }
+
+    .lineup{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .artist{
+      background:var(--red);
+      color:var(--white);
+      border:5px solid var(--white);
+      border-radius:22px;
+      padding:18px 10px;
+      text-align:center;
+      font-size:30px;
+      line-height:.9;
+      text-transform:uppercase;
+      box-shadow:7px 7px 0 var(--black);
+    }
+
+    .ticket-box{
+      background:var(--white);
+      border:7px solid var(--black);
+      border-radius:var(--radius);
+      padding:28px;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:22px;
+      align-items:center;
+    }
+
+    .ticket-box h2{
+      font-size:48px;
+      line-height:.9;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    .ticket-box p{
+      font-family:Arial, sans-serif;
+      font-weight:850;
+      font-size:18px;
+      line-height:1.45;
+      color:#2a1c00;
+    }
+
+    .message-template{
+      margin-top:18px;
+      background:var(--black);
+      color:var(--white);
+      border-radius:18px;
+      padding:18px;
+      font-family:Arial, sans-serif;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .template-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      margin-bottom:10px;
+    }
+
+    .template-top strong{
+      color:var(--yellow);
+    }
+
+    footer{
+      padding:38px 0 50px;
+      text-align:center;
+      font-family:Arial, sans-serif;
+      font-weight:900;
+      color:#2a1c00;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%) translateY(120px);
+      z-index:99;
+      background:var(--black);
+      color:var(--white);
+      padding:14px 18px;
+      border-radius:999px;
+      box-shadow:6px 6px 0 var(--red);
+      font-family:Arial, sans-serif;
+      font-weight:950;
+      transition:.25s ease;
+      pointer-events:none;
+      text-align:center;
+      width:max-content;
+      max-width:calc(100% - 32px);
+    }
+
+    .toast.show{
+      transform:translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 900px){
+      .nav-links{
+        display:none;
+      }
+
+      .menu-btn{
+        display:inline-flex;
+      }
+
+      .hero{
+        padding:42px 0 30px;
+      }
+
+      .hero-grid{
+        grid-template-columns:1fr;
+      }
+
+      .main-title{
+        letter-spacing:-2px;
+      }
+
+      .event-card{
+        transform:none;
+      }
+
+      .info-grid,
+      .promoter-grid,
+      .lineup,
+      .ticket-box{
+        grid-template-columns:1fr;
+      }
+
+      .ticket-box{
+        text-align:left;
+      }
+    }
+
+    @media (max-width: 520px){
+      .container{
+        width:min(100% - 22px, 1120px);
+      }
+
+      header{
+        padding:14px 0;
+      }
+
+      .brand-icon{
+        width:54px;
+        height:54px;
+        border-radius:17px;
+      }
+
+      .brand-title{
+        font-size:24px;
+        text-shadow:2px 2px 0 var(--white);
+      }
+
+      .menu-btn{
+        padding:13px 17px;
+      }
+
+      .hero{
+        padding-top:28px;
+      }
+
+      .tag{
+        margin-bottom:16px;
+      }
+
+      .main-title{
+        font-size:56px;
+        text-shadow:
+          4px 4px 0 var(--black),
+          8px 8px 0 var(--red);
+      }
+
+      .festival{
+        font-size:32px;
+      }
+
+      .hero-text{
+        font-size:17px;
+      }
+
+      .btn{
+        width:100%;
+        padding:16px 18px;
+      }
+
+      .poster-frame{
+        min-height:360px;
+        padding:18px;
+      }
+
+      .date{
+        font-size:40px;
+      }
+
+      .countdown{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+      .section-title{
+        font-size:43px;
+      }
+
+      .promoter h3{
+        font-size:34px;
+      }
+
+      .artist{
+        font-size:27px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="noise"></div>
+  <div class="shape leaf one"></div>
+  <div class="shape leaf two"></div>
+  <div class="shape leaf three"></div>
+
+  <header>
+    <div class="container">
+      <nav class="nav">
+        <a href="#top" class="brand">
+          <div class="brand-icon"><span>✦</span></div>
+          <div class="brand-title">No Sleep City</div>
+        </a>
+
+        <div class="nav-links">
+          <a href="#info">Infó</a>
+          <a href="#promoters">Promóterek</a>
+          <a href="#lineup">Fellépők</a>
+          <a href="#tickets">Jegyek</a>
+        </div>
+
+        <button class="menu-btn" id="menuBtn">Menü</button>
+      </nav>
+
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#info">Infó</a>
+        <a href="#promoters">Promóterek</a>
+        <a href="#lineup">Fellépők</a>
+        <a href="#tickets">Jegyek</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="tag">🔥 Open Air Festival</div>
+          <h1 class="main-title">No Sleep<br>In The City</h1>
+          <div class="festival">Jegyek promóterektől</div>
+
+          <p class="hero-text">
+            Június 19. péntek — Kiskunfélegyháza, Sportcsarnok parkoló.
+            A jegyeket a lent található promótereknél tudod megvenni.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn" href="#promoters">🎟️ Promóterek</a>
+            <a class="btn secondary" href="#lineup">✨ Fellépők</a>
+          </div>
+        </div>
+
+        <aside class="event-card">
+          <div class="poster-frame">
+            <div class="poster-top">
+              <div class="date">Június 19.<br>Péntek</div>
+              <div class="location">Kiskunfélegyháza // Sportcsarnok parkoló</div>
+              <div class="mini-lineup">
+                <span>Burai</span>
+                <span>KKevin</span>
+                <span>Vini</span>
+                <span>RZMVS</span>
+                <span>Brook</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="countdown" id="countdown">
+                <div class="time-box"><strong id="days">00</strong><small>nap</small></div>
+                <div class="time-box"><strong id="hours">00</strong><small>óra</small></div>
+                <div class="time-box"><strong id="mins">00</strong><small>perc</small></div>
+                <div class="time-box"><strong id="secs">00</strong><small>mp</small></div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="info">
+      <div class="container">
+        <h2 class="section-title">Event infó</h2>
+        <p class="section-sub">
+          Itt vannak a legfontosabb részletek egy helyen, hogy senki ne keresse percekig a dátumot meg a helyszínt.
+        </p>
+
+        <div class="info-grid">
+          <div class="info">
+            <span>Dátum</span>
+            <strong>Június 19. péntek</strong>
+          </div>
+
+          <div class="info">
+            <span>Helyszín</span>
+            <strong>Kiskunfélegyháza</strong>
+          </div>
+
+          <div class="info">
+            <span>Pontos hely</span>
+            <strong>Sportcsarnok parkoló</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="promoters">
+      <div class="container">
+        <h2 class="section-title">Promóterek</h2>
+        <p class="section-sub">
+          Jegyet szeretnél? Írj rá az egyik promóterre Instagramon vagy Facebookon.
+          A gombok megnyitják a profilokat, a másolás gombok pedig kimásolják a nevet/handle-t.
+        </p>
+
+        <div class="promoter-grid">
+          <article class="promoter">
+            <h3>Szedlacsek Tünde</h3>
+            <p>Jegyvásárlás Tündénél.</p>
+
+            <div class="socials">
+              <a class="social-link" href="https://www.instagram.com/_szdlcsk_?igsh=d2M0dzN2bmNkZW5p" target="_blank" rel="noopener">
+                Instagram: @_szdlcsk_
+                <span>↗</span>
+              </a>
+
+              <a class="social-link facebook" href="https://www.facebook.com/share/1aUpejsntC/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                Facebook: Tünde Szedlacsek
+                <span>↗</span>
+              </a>
+            </div>
+
+            <div class="copy-row">
+              <button class="copy-btn" data-copy="@_szdlcsk_">Insta másolása</button>
+              <button class="copy-btn" data-copy="Tünde Szedlacsek">Facebook név másolása</button>
+            </div>
+          </article>
+
+          <article class="promoter">
+            <h3>Csányi Réka</h3>
+            <p>Jegyvásárlás Rékánál.</p>
+
+            <div class="socials">
+              <a class="social-link" href="https://www.instagram.com/reka_csanyi_?igsh=NjkzeWF6ODgyZ3I4" target="_blank" rel="noopener">
+                Instagram: @reka_csanyi_
+                <span>↗</span>
+              </a>
+
+              <a class="social-link facebook" href="https://www.facebook.com/share/1CkugAQ8VQ/?mibextid=wwXIfr" target="_blank" rel="noopener">
+                Facebook: Réka Csányi
+                <span>↗</span>
+              </a>
+            </div>
+
+            <div class="copy-row">
+              <button class="copy-btn" data-copy="@reka_csanyi_">Insta másolása</button>
+              <button class="copy-btn" data-copy="Réka Csányi">Facebook név másolása</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="lineup">
+      <div class="container">
+        <h2 class="section-title">Fellépők</h2>
+
+        <div class="lineup">
+          <div class="artist">Burai</div>
+          <div class="artist">KKevin</div>
+          <div class="artist">Vini</div>
+          <div class="artist">RZMVS</div>
+          <div class="artist">Dobozi Lacika</div>
+          <div class="artist">Brook</div>
+          <div class="artist">Ciggi</div>
+          <div class="artist">Haden</div>
+          <div class="artist">Peter Lowner</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tickets">
+      <div class="container">
+        <div class="ticket-box">
+          <div>
+            <h2>Jegyet szeretnél?</h2>
+            <p>
+              Kattints a promóterek egyikére, vagy másold ki az üzenetet és küldd el nekik.
+            </p>
+
+            <div class="message-template">
+              <div class="template-top">
+                <strong>Üzenet sablon</strong>
+                <button class="copy-btn" data-copy="Szia! No Sleep In The City jegyet szeretnék venni. Tudnál segíteni?">Másolás</button>
+              </div>
+              Szia! No Sleep In The City jegyet szeretnék venni. Tudnál segíteni?
+            </div>
+          </div>
+
+          <a class="btn" href="#promoters">Promóter választása</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    No Sleep In The City • Június 19. • Kiskunfélegyháza
+  </footer>
+
+  <div class="toast" id="toast">Kimásolva ✅</div>
+
+  <script>
+    const menuBtn = document.getElementById("menuBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const toast = document.getElementById("toast");
+
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+    });
+
+    document.querySelectorAll(".mobile-menu a").forEach(link => {
+      link.addEventListener("click", () => {
+        mobileMenu.classList.remove("open");
+      });
+    });
+
+    function showToast(text = "Kimásolva ✅"){
+      toast.textContent = text;
+      toast.classList.add("show");
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1800);
+    }
+
+    document.querySelectorAll("[data-copy]").forEach(button => {
+      button.addEventListener("click", async () => {
+        const text = button.getAttribute("data-copy");
+
+        try{
+          await navigator.clipboard.writeText(text);
+          showToast("Kimásolva: " + text);
+        }catch(error){
+          showToast("Másolás nem sikerült");
+        }
+      });
+    });
+
+    // Change the year here if your event is not in 2026.
+    const eventDate = new Date("2026-06-19T20:00:00+02:00").getTime();
+
+    const daysEl = document.getElementById("days");
+    const hoursEl = document.getElementById("hours");
+    const minsEl = document.getElementById("mins");
+    const secsEl = document.getElementById("secs");
+
+    function updateCountdown(){
+      const now = new Date().getTime();
+      const distance = eventDate - now;
+
+      if(distance <= 0){
+        daysEl.textContent = "00";
+        hoursEl.textContent = "00";
+        minsEl.textContent = "00";
+        secsEl.textContent = "00";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((distance / (1000 * 60)) % 60);
+      const secs = Math.floor((distance / 1000) % 60);
+
+      daysEl.textContent = String(days).padStart(2, "0");
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minsEl.textContent = String(mins).padStart(2, "0");
+      secsEl.textContent = String(secs).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
