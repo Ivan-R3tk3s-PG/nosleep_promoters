@@ -1,1409 +1,1647 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>No Sleep In The City – Jegyek promóterektől</title>
-
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="4f82a590-4c20-4807-b3e2-1a22d74ce141"></script>
-
-  <style>
-    :root{
-      --yellow:#ffd51f;
-      --orange:#ff7a1a;
-      --red:#ef1b2d;
-      --green:#0aa65b;
-      --black:#09090d;
-      --white:#fffaf0;
-      --shadow:10px 10px 0 rgba(239,27,45,.95);
-      --radius:26px;
-    }
-
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
-
-    html{
-      scroll-behavior:smooth;
-    }
-
-    body{
-      font-family:Impact, Haettenschweiler, "Arial Narrow Bold", Arial, sans-serif;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(255,255,255,.55), transparent 20%),
-        linear-gradient(135deg, #ffe94c 0%, var(--yellow) 38%, var(--orange) 100%);
-      color:var(--black);
-      overflow-x:hidden;
-      min-height:100vh;
-    }
-
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      opacity:.18;
-      background-image:
-        linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px);
-      background-size:80px 80px;
-      mix-blend-mode:soft-light;
-      z-index:0;
-    }
-
-    .noise{
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:1;
-      opacity:.12;
-      background:repeating-linear-gradient(
-        0deg,
-        rgba(0,0,0,.08) 0px,
-        rgba(0,0,0,.08) 1px,
-        transparent 1px,
-        transparent 4px
-      );
-    }
-
-    .shape{
-      position:fixed;
-      z-index:0;
-      pointer-events:none;
-      opacity:.85;
-      filter:drop-shadow(0 20px 20px rgba(0,0,0,.12));
-    }
-
-    .leaf{
-      width:240px;
-      height:120px;
-      border-radius:100% 0 100% 0;
-      background:linear-gradient(135deg, #007a3d, #3bd16e);
-    }
-
-    .leaf.one{
-      top:155px;
-      left:-90px;
-      transform:rotate(-32deg);
-    }
-
-    .leaf.two{
-      bottom:35px;
-      right:-75px;
-      transform:rotate(25deg);
-    }
-
-    .leaf.three{
-      top:390px;
-      right:-80px;
-      background:linear-gradient(135deg, #ef1b2d, #ff8a2a);
-      transform:rotate(10deg);
-    }
-
-    .container{
-      position:relative;
-      z-index:2;
-      width:min(1120px, calc(100% - 32px));
-      margin:0 auto;
-    }
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:20;
-      padding:18px 0;
-      backdrop-filter:blur(18px);
-      background:rgba(255,213,31,.58);
-      border-bottom:1px solid rgba(0,0,0,.08);
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:18px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      text-decoration:none;
-      color:var(--black);
-      min-width:0;
-    }
-
-    .brand-icon{
-      width:64px;
-      height:64px;
-      border:6px solid var(--white);
-      border-radius:20px;
-      background:var(--black);
-      box-shadow:8px 8px 0 var(--red);
-      display:grid;
-      place-items:center;
-      flex:0 0 auto;
-      transform:rotate(-6deg);
-    }
-
-    .brand-icon span{
-      color:var(--yellow);
-      font-size:31px;
-    }
-
-    .brand-title{
-      font-size:32px;
-      letter-spacing:-1px;
-      text-transform:uppercase;
-      text-shadow:3px 3px 0 var(--white);
-      line-height:.9;
-      white-space:nowrap;
-    }
-
-    .nav-links{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .nav-links a,
-    .menu-btn{
-      border:none;
-      text-decoration:none;
-      color:var(--white);
-      background:var(--black);
-      padding:14px 19px;
-      border-radius:999px;
-      font-size:18px;
-      font-family:Arial, sans-serif;
-      font-weight:900;
-      box-shadow:5px 5px 0 var(--red);
-      cursor:pointer;
-      transition:.2s ease;
-    }
-
-    .nav-links a:hover,
-    .menu-btn:hover{
-      transform:translate(-2px,-2px);
-      box-shadow:8px 8px 0 var(--red);
-    }
-
-    .menu-btn{
-      display:none;
-    }
-
-    .mobile-menu{
-      display:none;
-      margin-top:16px;
-      background:rgba(9,9,13,.96);
-      border-radius:22px;
-      padding:14px;
-      box-shadow:8px 8px 0 var(--red);
-    }
-
-    .mobile-menu.open{
-      display:grid;
-      gap:10px;
-    }
-
-    .mobile-menu a{
-      color:var(--white);
-      text-decoration:none;
-      font-family:Arial, sans-serif;
-      font-weight:900;
-      padding:13px 15px;
-      border-radius:16px;
-      background:rgba(255,255,255,.08);
-    }
-
-    .hero{
-      padding:74px 0 46px;
-      display:grid;
-      align-items:center;
-    }
-
-    .hero-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:34px;
-      align-items:center;
-    }
-
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-      background:var(--black);
-      color:var(--yellow);
-      padding:11px 16px;
-      border-radius:999px;
-      box-shadow:6px 6px 0 var(--red);
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      text-transform:uppercase;
-      margin-bottom:22px;
-    }
-
-    .main-title{
-      font-size:clamp(54px, 9vw, 118px);
-      line-height:.82;
-      text-transform:uppercase;
-      letter-spacing:-4px;
-      color:var(--white);
-      text-shadow:
-        5px 5px 0 var(--black),
-        11px 11px 0 var(--red);
-      margin-bottom:20px;
-    }
-
-    .festival{
-      display:inline-block;
-      background:var(--black);
-      color:var(--yellow);
-      padding:12px 18px;
-      transform:rotate(-1deg);
-      border-radius:10px;
-      font-size:clamp(28px, 4.5vw, 58px);
-      line-height:.95;
-      text-transform:uppercase;
-      box-shadow:9px 9px 0 var(--red);
-      margin-bottom:24px;
-    }
-
-    .hero-text{
-      font-family:Arial, sans-serif;
-      font-size:20px;
-      line-height:1.45;
-      max-width:650px;
-      font-weight:800;
-      color:#221600;
-      margin-bottom:24px;
-    }
-
-    .hero-actions,
-    .quick-actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .quick-actions{
-      margin-top:18px;
-    }
-
-    .btn,
-    .quick-action-btn{
-      appearance:none;
-      border:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:9px;
-      text-decoration:none;
-      cursor:pointer;
-      border-radius:999px;
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      transition:.2s ease;
-    }
-
-    .btn{
-      background:var(--red);
-      color:var(--white);
-      padding:17px 24px;
-      font-size:20px;
-      box-shadow:7px 7px 0 var(--black);
-    }
-
-    .btn:hover{
-      transform:translate(-2px,-2px);
-      box-shadow:10px 10px 0 var(--black);
-    }
-
-    .btn.secondary{
-      background:var(--white);
-      color:var(--black);
-    }
-
-    .quick-action-btn{
-      background:var(--black);
-      color:var(--yellow);
-      padding:15px 21px;
-      font-size:18px;
-      box-shadow:6px 6px 0 var(--red);
-    }
-
-    .quick-action-btn:hover{
-      transform:translate(-2px,-2px);
-      box-shadow:9px 9px 0 var(--red);
-    }
-
-    .event-card{
-      position:relative;
-      background:rgba(255,250,240,.88);
-      border:7px solid var(--black);
-      border-radius:var(--radius);
-      padding:22px;
-      box-shadow:var(--shadow);
-      transform:rotate(1.2deg);
-      overflow:hidden;
-    }
-
-    .event-card::before{
-      content:"";
-      position:absolute;
-      inset:-60px;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(239,27,45,.18), transparent 22%),
-        radial-gradient(circle at 85% 80%, rgba(10,166,91,.18), transparent 25%);
-      z-index:-1;
-    }
-
-    .poster-frame{
-      background:var(--black);
-      color:var(--white);
-      border-radius:20px;
-      padding:24px;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start;
-      gap:28px;
-      overflow:hidden;
-    }
-
-    .poster-top{
-      display:grid;
-      gap:12px;
-    }
-
-    .date{
-      color:var(--yellow);
-      font-size:48px;
-      line-height:.88;
-      text-transform:uppercase;
-      text-shadow:4px 4px 0 var(--red);
-    }
-
-    .location{
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      font-size:22px;
-      background:var(--yellow);
-      color:var(--black);
-      padding:10px 12px;
-      border-radius:10px;
-      text-transform:uppercase;
-    }
-
-    .countdown{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-    }
-
-    .time-box{
-      background:var(--white);
-      color:var(--black);
-      border-radius:14px;
-      padding:12px 7px;
-      text-align:center;
-      border:3px solid var(--yellow);
-    }
-
-    .time-box strong{
-      display:block;
-      font-size:31px;
-      line-height:1;
-    }
-
-    .time-box small{
-      font-family:Arial, sans-serif;
-      font-weight:900;
-      text-transform:uppercase;
-    }
-
-    section{
-      padding:48px 0;
-    }
-
-    .section-title{
-      display:inline-block;
-      font-size:clamp(38px, 6vw, 76px);
-      line-height:.85;
-      color:var(--white);
-      text-shadow:
-        4px 4px 0 var(--black),
-        9px 9px 0 var(--red);
-      margin-bottom:28px;
-      text-transform:uppercase;
-      letter-spacing:-2px;
-    }
-
-    .section-sub{
-      font-family:Arial, sans-serif;
-      font-weight:850;
-      color:#241700;
-      font-size:19px;
-      max-width:780px;
-      margin:-12px 0 28px;
-      line-height:1.45;
-    }
-
-    .ticket-types{
-      background:rgba(255,250,240,.94);
-      border:5px solid var(--black);
-      border-radius:23px;
-      padding:22px;
-      box-shadow:7px 7px 0 var(--red);
-      margin:22px 0 34px;
-      font-family:Arial, sans-serif;
-      color:#201500;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .ticket-types::before,
-    .ticket-types::after{
-      content:"";
-      position:absolute;
-      width:150px;
-      height:75px;
-      border-radius:100% 0 100% 0;
-      pointer-events:none;
-      opacity:.36;
-      z-index:0;
-    }
-
-    .ticket-types::before{
-      background:linear-gradient(135deg, #ef1b2d, #ff7a1a);
-      top:-22px;
-      right:-48px;
-      transform:rotate(18deg);
-    }
-
-    .ticket-types::after{
-      background:linear-gradient(135deg, #007a3d, #36c96a);
-      bottom:-32px;
-      left:-44px;
-      transform:rotate(-22deg);
-    }
-
-    .ticket-types > *{
-      position:relative;
-      z-index:1;
-    }
-
-    .ticket-types strong{
-      display:block;
-      font-size:20px;
-      font-weight:950;
-      margin-bottom:10px;
-      text-transform:uppercase;
-    }
-
-    .ticket-types ul{
-      margin:0;
-      padding-left:20px;
-      display:grid;
-      gap:8px;
-      font-size:18px;
-      font-weight:850;
-      line-height:1.4;
-    }
-
-    .promoter-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:34px;
-      margin-top:30px;
-    }
-
-    .promoter{
-      background:rgba(9,9,13,.96);
-      color:var(--white);
-      border-radius:var(--radius);
-      border:6px solid var(--white);
-      box-shadow:9px 9px 0 var(--red);
-      padding:24px;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .promoter::after{
-      content:"";
-      position:absolute;
-      width:220px;
-      height:220px;
-      border-radius:50%;
-      right:-95px;
-      top:-95px;
-      background:radial-gradient(circle, rgba(255,213,31,.85), transparent 65%);
-      pointer-events:none;
-    }
-
-    .promoter h3{
-      font-size:42px;
-      line-height:.9;
-      margin-bottom:12px;
-      text-transform:uppercase;
-      position:relative;
-      z-index:1;
-    }
-
-    .promoter p{
-      font-family:Arial, sans-serif;
-      font-weight:800;
-      opacity:.86;
-      line-height:1.45;
-      margin-bottom:16px;
-      position:relative;
-      z-index:1;
-    }
-
-    .socials{
-      display:grid;
-      gap:12px;
-      position:relative;
-      z-index:1;
-    }
-
-    .social-link{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      text-decoration:none;
-      color:var(--black);
-      background:var(--yellow);
-      padding:14px 15px;
-      border-radius:17px;
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      box-shadow:5px 5px 0 var(--red);
-      word-break:break-word;
-    }
-
-    .social-link.facebook{
-      background:var(--white);
-    }
-
-    .copy-row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:16px;
-      position:relative;
-      z-index:1;
-    }
-
-    .copy-btn{
-      border:none;
-      background:var(--red);
-      color:var(--white);
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      padding:12px 14px;
-      border-radius:14px;
-      cursor:pointer;
-      box-shadow:4px 4px 0 var(--yellow);
-    }
-
-    .lineup-poster-wrap{
-      background:rgba(255,250,240,.92);
-      border:7px solid var(--black);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
-    }
-
-    .lineup-poster{
-      display:block;
-      width:100%;
-      height:auto;
-      border-radius:18px;
-      border:4px solid var(--black);
-      box-shadow:6px 6px 0 var(--red);
-    }
-
-    .ticket-box{
-      background:var(--white);
-      border:7px solid var(--black);
-      border-radius:var(--radius);
-      padding:28px;
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:1fr auto;
-      gap:22px;
-      align-items:center;
-      position:relative;
-      overflow:hidden;
-    }
-
-    .ticket-box::before,
-    .ticket-box::after,
-    .ticket-leaf{
-      content:"";
-      position:absolute;
-      width:190px;
-      height:95px;
-      border-radius:100% 0 100% 0;
-      pointer-events:none;
-      opacity:.28;
-      z-index:0;
-    }
-
-    .ticket-box::before{
-      background:linear-gradient(135deg, #ef1b2d, #ff7a1a);
-      top:-30px;
-      right:-48px;
-      transform:rotate(15deg);
-    }
-
-    .ticket-box::after{
-      background:linear-gradient(135deg, #007a3d, #3bd16e);
-      bottom:-42px;
-      left:-58px;
-      transform:rotate(-25deg);
-    }
-
-    .ticket-leaf{
-      background:linear-gradient(135deg, #007a3d, #3bd16e);
-    }
-
-    .ticket-leaf-right{
-      right:-70px;
-      bottom:38px;
-      transform:rotate(24deg);
-    }
-
-    .ticket-box > *:not(.ticket-leaf){
-      position:relative;
-      z-index:1;
-    }
-
-    .ticket-box h2{
-      font-size:48px;
-      line-height:.9;
-      text-transform:uppercase;
-      margin-bottom:10px;
-    }
-
-    .ticket-box p{
-      font-family:Arial, sans-serif;
-      font-weight:850;
-      font-size:18px;
-      line-height:1.45;
-      color:#2a1c00;
-    }
-
-    .message-template{
-      margin-top:18px;
-      background:var(--black);
-      color:var(--white);
-      border-radius:18px;
-      padding:18px;
-      font-family:Arial, sans-serif;
-      font-weight:800;
-      line-height:1.45;
-    }
-
-    .template-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      margin-bottom:10px;
-    }
-
-    .template-top strong{
-      color:var(--yellow);
-    }
-
-    footer{
-      padding:38px 0 50px;
-      text-align:center;
-      font-family:Arial, sans-serif;
-      font-weight:900;
-      color:#2a1c00;
-    }
-
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:24px;
-      transform:translateX(-50%) translateY(120px);
-      z-index:99;
-      background:var(--black);
-      color:var(--white);
-      padding:14px 18px;
-      border-radius:999px;
-      box-shadow:6px 6px 0 var(--red);
-      font-family:Arial, sans-serif;
-      font-weight:950;
-      transition:.25s ease;
-      pointer-events:none;
-      text-align:center;
-      width:max-content;
-      max-width:calc(100% - 32px);
-    }
-
-    .toast.show{
-      transform:translateX(-50%) translateY(0);
-    }
-
-    @media (min-width:901px){
-      .event-card{
-        max-width:520px;
-        justify-self:center;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>No Sleep In The City – Jegyek promóterektől</title>
+
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="4f82a590-4c20-4807-b3e2-1a22d74ce141"
+    ></script>
+
+    <style>
+      :root {
+        --yellow: #ffd51f;
+        --orange: #ff7a1a;
+        --red: #ef1b2d;
+        --green: #0aa65b;
+        --black: #09090d;
+        --white: #fffaf0;
+        --shadow: 10px 10px 0 rgba(239, 27, 45, 0.95);
+        --radius: 26px;
       }
 
-      .poster-frame{
-        min-height:320px;
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      .countdown{
-        margin-top:12px;
+      html {
+        scroll-behavior: smooth;
       }
 
-      .lineup-poster-wrap{
-        max-width:900px;
-        margin:0 auto;
-        padding:16px;
+      body {
+        font-family:
+          Impact, Haettenschweiler, "Arial Narrow Bold", Arial, sans-serif;
+        background:
+          radial-gradient(
+            circle at 20% 10%,
+            rgba(255, 255, 255, 0.55),
+            transparent 20%
+          ),
+          linear-gradient(
+            135deg,
+            #ffe94c 0%,
+            var(--yellow) 38%,
+            var(--orange) 100%
+          );
+        color: var(--black);
+        overflow-x: hidden;
+        min-height: 100vh;
       }
 
-      .lineup-poster{
-        width:100%;
-        max-width:860px;
-        margin:0 auto;
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-size: 80px 80px;
+        mix-blend-mode: soft-light;
+        z-index: 0;
       }
 
-      .ticket-box{
-        max-width:760px;
-        margin:0 auto;
-        grid-template-columns:1fr;
-        gap:24px;
-        text-align:left;
+      .noise {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.12;
+        background: repeating-linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.08) 0px,
+          rgba(0, 0, 0, 0.08) 1px,
+          transparent 1px,
+          transparent 4px
+        );
       }
 
-      .message-template{
-        max-width:100%;
+      .shape {
+        position: fixed;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.85;
+        filter: drop-shadow(0 20px 20px rgba(0, 0, 0, 0.12));
       }
 
-      .ticket-box .btn{
-        width:max-content;
-        justify-self:center;
-        align-self:center;
-      }
-    }
-
-    @media (max-width:900px){
-      .nav-links{
-        display:none;
+      .leaf {
+        width: 240px;
+        height: 120px;
+        border-radius: 100% 0 100% 0;
+        background: linear-gradient(135deg, #007a3d, #3bd16e);
       }
 
-      .menu-btn{
-        display:inline-flex;
+      .leaf.one {
+        top: 155px;
+        left: -90px;
+        transform: rotate(-32deg);
       }
 
-      .hero{
-        padding:42px 0 30px;
+      .leaf.two {
+        bottom: 35px;
+        right: -75px;
+        transform: rotate(25deg);
       }
 
-      .hero-grid{
-        grid-template-columns:1fr;
+      .leaf.three {
+        top: 390px;
+        right: -80px;
+        background: linear-gradient(135deg, #ef1b2d, #ff8a2a);
+        transform: rotate(10deg);
       }
 
-      .main-title{
-        letter-spacing:-2px;
+      .container {
+        position: relative;
+        z-index: 2;
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
       }
 
-      .event-card{
-        transform:none;
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 18px 0;
+        backdrop-filter: blur(18px);
+        background: rgba(255, 213, 31, 0.58);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
       }
 
-      .promoter-grid,
-      .ticket-box{
-        grid-template-columns:1fr;
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
       }
 
-      .ticket-box{
-        text-align:left;
-      }
-    }
-
-    @media (max-width:520px){
-      .container{
-        width:min(100% - 22px, 1120px);
-      }
-
-      header{
-        padding:14px 0;
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-decoration: none;
+        color: var(--black);
+        min-width: 0;
       }
 
-      .brand-icon{
-        width:54px;
-        height:54px;
-        border-radius:17px;
+      .brand-icon {
+        width: 64px;
+        height: 64px;
+        border: 6px solid var(--white);
+        border-radius: 20px;
+        background: var(--black);
+        box-shadow: 8px 8px 0 var(--red);
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        transform: rotate(-6deg);
       }
 
-      .brand-title{
-        font-size:24px;
-        text-shadow:2px 2px 0 var(--white);
+      .brand-icon span {
+        color: var(--yellow);
+        font-size: 31px;
       }
 
-      .menu-btn{
-        padding:13px 17px;
+      .brand-title {
+        font-size: 32px;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+        text-shadow: 3px 3px 0 var(--white);
+        line-height: 0.9;
+        white-space: nowrap;
       }
 
-      .hero{
-        padding-top:28px;
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
-      .tag{
-        margin-bottom:16px;
+      .nav-links a,
+      .menu-btn {
+        border: none;
+        text-decoration: none;
+        color: var(--white);
+        background: var(--black);
+        padding: 14px 19px;
+        border-radius: 999px;
+        font-size: 18px;
+        font-family: Arial, sans-serif;
+        font-weight: 900;
+        box-shadow: 5px 5px 0 var(--red);
+        cursor: pointer;
+        transition: 0.2s ease;
       }
 
-      .main-title{
-        font-size:56px;
+      .nav-links a:hover,
+      .menu-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 8px 8px 0 var(--red);
+      }
+
+      .menu-btn {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: none;
+        margin-top: 16px;
+        background: rgba(9, 9, 13, 0.96);
+        border-radius: 22px;
+        padding: 14px;
+        box-shadow: 8px 8px 0 var(--red);
+      }
+
+      .mobile-menu.open {
+        display: grid;
+        gap: 10px;
+      }
+
+      .mobile-menu a {
+        color: var(--white);
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        font-weight: 900;
+        padding: 13px 15px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .hero {
+        padding: 74px 0 46px;
+        display: grid;
+        align-items: center;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 34px;
+        align-items: center;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--black);
+        color: var(--yellow);
+        padding: 11px 16px;
+        border-radius: 999px;
+        box-shadow: 6px 6px 0 var(--red);
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        text-transform: uppercase;
+        margin-bottom: 22px;
+      }
+
+      .main-title {
+        font-size: clamp(54px, 9vw, 118px);
+        line-height: 0.82;
+        text-transform: uppercase;
+        letter-spacing: -4px;
+        color: var(--white);
+        text-shadow:
+          5px 5px 0 var(--black),
+          11px 11px 0 var(--red);
+        margin-bottom: 20px;
+      }
+
+      .festival {
+        display: inline-block;
+        background: var(--black);
+        color: var(--yellow);
+        padding: 12px 18px;
+        transform: rotate(-1deg);
+        border-radius: 10px;
+        font-size: clamp(28px, 4.5vw, 58px);
+        line-height: 0.95;
+        text-transform: uppercase;
+        box-shadow: 9px 9px 0 var(--red);
+        margin-bottom: 24px;
+      }
+
+      .hero-text {
+        font-family: Arial, sans-serif;
+        font-size: 20px;
+        line-height: 1.45;
+        max-width: 650px;
+        font-weight: 800;
+        color: #221600;
+        margin-bottom: 24px;
+      }
+
+      .hero-actions,
+      .quick-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+
+      .quick-actions {
+        margin-top: 18px;
+      }
+
+      .btn,
+      .quick-action-btn {
+        appearance: none;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 999px;
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        transition: 0.2s ease;
+      }
+
+      .btn {
+        background: var(--red);
+        color: var(--white);
+        padding: 17px 24px;
+        font-size: 20px;
+        box-shadow: 7px 7px 0 var(--black);
+      }
+
+      .btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 10px 10px 0 var(--black);
+      }
+
+      .btn.secondary {
+        background: var(--white);
+        color: var(--black);
+      }
+
+      .quick-action-btn {
+        background: var(--black);
+        color: var(--yellow);
+        padding: 15px 21px;
+        font-size: 18px;
+        box-shadow: 6px 6px 0 var(--red);
+      }
+
+      .quick-action-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 9px 9px 0 var(--red);
+      }
+
+      .event-card {
+        position: relative;
+        background: rgba(255, 250, 240, 0.88);
+        border: 7px solid var(--black);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+        transform: rotate(1.2deg);
+        overflow: hidden;
+      }
+
+      .event-card::before {
+        content: "";
+        position: absolute;
+        inset: -60px;
+        background:
+          radial-gradient(
+            circle at 20% 20%,
+            rgba(239, 27, 45, 0.18),
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(10, 166, 91, 0.18),
+            transparent 25%
+          );
+        z-index: -1;
+      }
+
+      .poster-frame {
+        background: var(--black);
+        color: var(--white);
+        border-radius: 20px;
+        padding: 24px;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 28px;
+        overflow: hidden;
+      }
+
+      .poster-top {
+        display: grid;
+        gap: 12px;
+      }
+
+      .date {
+        color: var(--yellow);
+        font-size: 48px;
+        line-height: 0.88;
+        text-transform: uppercase;
+        text-shadow: 4px 4px 0 var(--red);
+      }
+
+      .location {
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        font-size: 22px;
+        background: var(--yellow);
+        color: var(--black);
+        padding: 10px 12px;
+        border-radius: 10px;
+        text-transform: uppercase;
+      }
+
+      .countdown {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .time-box {
+        background: var(--white);
+        color: var(--black);
+        border-radius: 14px;
+        padding: 12px 7px;
+        text-align: center;
+        border: 3px solid var(--yellow);
+      }
+
+      .time-box strong {
+        display: block;
+        font-size: 31px;
+        line-height: 1;
+      }
+
+      .time-box small {
+        font-family: Arial, sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      section {
+        padding: 48px 0;
+      }
+
+      .section-title {
+        display: inline-block;
+        font-size: clamp(38px, 6vw, 76px);
+        line-height: 0.85;
+        color: var(--white);
         text-shadow:
           4px 4px 0 var(--black),
-          8px 8px 0 var(--red);
+          9px 9px 0 var(--red);
+        margin-bottom: 28px;
+        text-transform: uppercase;
+        letter-spacing: -2px;
       }
 
-      .festival{
-        font-size:32px;
+      .section-sub {
+        font-family: Arial, sans-serif;
+        font-weight: 850;
+        color: #241700;
+        font-size: 19px;
+        max-width: 780px;
+        margin: -12px 0 28px;
+        line-height: 1.45;
       }
 
-      .hero-text{
-        font-size:17px;
+      .ticket-types {
+        background: rgba(255, 250, 240, 0.94);
+        border: 5px solid var(--black);
+        border-radius: 23px;
+        padding: 22px;
+        box-shadow: 7px 7px 0 var(--red);
+        margin: 22px 0 34px;
+        font-family: Arial, sans-serif;
+        color: #201500;
+        position: relative;
+        overflow: hidden;
       }
 
-      .hero-actions{
-        display:grid;
-        grid-template-columns:1fr;
-        gap:12px;
+      .ticket-types::before,
+      .ticket-types::after {
+        content: "";
+        position: absolute;
+        width: 150px;
+        height: 75px;
+        border-radius: 100% 0 100% 0;
+        pointer-events: none;
+        opacity: 0.36;
+        z-index: 0;
       }
 
-      .hero-actions .btn,
-      .hero-actions .btn.secondary{
-        width:100%;
-        padding:17px 18px;
-        font-size:20px;
-        background:var(--red);
-        color:var(--white);
-        box-shadow:7px 7px 0 var(--black);
+      .ticket-types::before {
+        background: linear-gradient(135deg, #ef1b2d, #ff7a1a);
+        top: -22px;
+        right: -48px;
+        transform: rotate(18deg);
       }
 
-      .quick-actions{
-        display:grid;
-        grid-template-columns:1fr 1fr;
-        gap:12px;
-        margin-top:12px;
+      .ticket-types::after {
+        background: linear-gradient(135deg, #007a3d, #36c96a);
+        bottom: -32px;
+        left: -44px;
+        transform: rotate(-22deg);
       }
 
-      .quick-action-btn{
-        width:100%;
-        padding:14px 12px;
-        font-size:16px;
-        box-shadow:5px 5px 0 var(--red);
+      .ticket-types > * {
+        position: relative;
+        z-index: 1;
       }
 
-      .poster-frame{
-        min-height:360px;
-        padding:18px;
-        gap:20px;
-        justify-content:space-between;
+      .ticket-types strong {
+        display: block;
+        font-size: 20px;
+        font-weight: 950;
+        margin-bottom: 10px;
+        text-transform: uppercase;
       }
 
-      .date{
-        font-size:40px;
+      .ticket-types ul {
+        margin: 0;
+        padding-left: 20px;
+        display: grid;
+        gap: 8px;
+        font-size: 18px;
+        font-weight: 850;
+        line-height: 1.4;
       }
 
-      .countdown{
-        grid-template-columns:repeat(2,1fr);
+      .promoter-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 34px;
+        margin-top: 30px;
       }
 
-      .section-title{
-        font-size:43px;
+      .promoter {
+        background: rgba(9, 9, 13, 0.96);
+        color: var(--white);
+        border-radius: var(--radius);
+        border: 6px solid var(--white);
+        box-shadow: 9px 9px 0 var(--red);
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
       }
 
-      .promoter h3{
-        font-size:34px;
+      .promoter::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border-radius: 50%;
+        right: -95px;
+        top: -95px;
+        background: radial-gradient(
+          circle,
+          rgba(255, 213, 31, 0.85),
+          transparent 65%
+        );
+        pointer-events: none;
+      }
+
+      .promoter h3 {
+        font-size: 42px;
+        line-height: 0.9;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 1;
+      }
+
+      .promoter p {
+        font-family: Arial, sans-serif;
+        font-weight: 800;
+        opacity: 0.86;
+        line-height: 1.45;
+        margin-bottom: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .socials {
+        display: grid;
+        gap: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .social-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--black);
+        background: var(--yellow);
+        padding: 14px 15px;
+        border-radius: 17px;
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        box-shadow: 5px 5px 0 var(--red);
+        word-break: break-word;
+      }
+
+      .social-link.facebook {
+        background: var(--white);
+      }
+
+      .copy-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .copy-btn {
+        border: none;
+        background: var(--red);
+        color: var(--white);
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        padding: 12px 14px;
+        border-radius: 14px;
+        cursor: pointer;
+        box-shadow: 4px 4px 0 var(--yellow);
+      }
+
+      .lineup-poster-wrap {
+        background: rgba(255, 250, 240, 0.92);
+        border: 7px solid var(--black);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .lineup-poster {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 18px;
+        border: 4px solid var(--black);
+        box-shadow: 6px 6px 0 var(--red);
+      }
+
+      .ticket-box {
+        background: var(--white);
+        border: 7px solid var(--black);
+        border-radius: var(--radius);
+        padding: 28px;
+        box-shadow: var(--shadow);
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 22px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
       }
 
       .ticket-box::before,
       .ticket-box::after,
-      .ticket-leaf{
-        width:145px;
-        height:72px;
-        opacity:.24;
+      .ticket-leaf {
+        content: "";
+        position: absolute;
+        width: 190px;
+        height: 95px;
+        border-radius: 100% 0 100% 0;
+        pointer-events: none;
+        opacity: 0.28;
+        z-index: 0;
       }
 
-      .ticket-leaf-right{
-        right:-70px;
-        bottom:20px;
+      .ticket-box::before {
+        background: linear-gradient(135deg, #ef1b2d, #ff7a1a);
+        top: -30px;
+        right: -48px;
+        transform: rotate(15deg);
       }
-    }
-  </style>
-</head>
 
-<body>
-  <div class="noise"></div>
-  <div class="shape leaf one"></div>
-  <div class="shape leaf two"></div>
-  <div class="shape leaf three"></div>
+      .ticket-box::after {
+        background: linear-gradient(135deg, #007a3d, #3bd16e);
+        bottom: -42px;
+        left: -58px;
+        transform: rotate(-25deg);
+      }
 
-  <header>
-    <div class="container">
-      <nav class="nav">
-        <a href="#top" class="brand">
-          <div class="brand-icon"><span>✦</span></div>
-          <div class="brand-title">No Sleep City</div>
-        </a>
+      .ticket-leaf {
+        background: linear-gradient(135deg, #007a3d, #3bd16e);
+      }
 
-        <div class="nav-links">
+      .ticket-leaf-right {
+        right: -70px;
+        bottom: 38px;
+        transform: rotate(24deg);
+      }
+
+      .ticket-box > *:not(.ticket-leaf) {
+        position: relative;
+        z-index: 1;
+      }
+
+      .ticket-box h2 {
+        font-size: 48px;
+        line-height: 0.9;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .ticket-box p {
+        font-family: Arial, sans-serif;
+        font-weight: 850;
+        font-size: 18px;
+        line-height: 1.45;
+        color: #2a1c00;
+      }
+
+      .message-template {
+        margin-top: 18px;
+        background: var(--black);
+        color: var(--white);
+        border-radius: 18px;
+        padding: 18px;
+        font-family: Arial, sans-serif;
+        font-weight: 800;
+        line-height: 1.45;
+      }
+
+      .template-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+      }
+
+      .template-top strong {
+        color: var(--yellow);
+      }
+
+      footer {
+        padding: 38px 0 50px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-weight: 900;
+        color: #2a1c00;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%) translateY(120px);
+        z-index: 99;
+        background: var(--black);
+        color: var(--white);
+        padding: 14px 18px;
+        border-radius: 999px;
+        box-shadow: 6px 6px 0 var(--red);
+        font-family: Arial, sans-serif;
+        font-weight: 950;
+        transition: 0.25s ease;
+        pointer-events: none;
+        text-align: center;
+        width: max-content;
+        max-width: calc(100% - 32px);
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (min-width: 901px) {
+        .event-card {
+          max-width: 520px;
+          justify-self: center;
+        }
+
+        .poster-frame {
+          min-height: 320px;
+        }
+
+        .countdown {
+          margin-top: 12px;
+        }
+
+        .lineup-poster-wrap {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 16px;
+        }
+
+        .lineup-poster {
+          width: 100%;
+          max-width: 860px;
+          margin: 0 auto;
+        }
+
+        .ticket-box {
+          max-width: 760px;
+          margin: 0 auto;
+          grid-template-columns: 1fr;
+          gap: 24px;
+          text-align: left;
+        }
+
+        .message-template {
+          max-width: 100%;
+        }
+
+        .ticket-box .btn {
+          width: max-content;
+          justify-self: center;
+          align-self: center;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .nav-links {
+          display: none;
+        }
+
+        .menu-btn {
+          display: inline-flex;
+        }
+
+        .hero {
+          padding: 42px 0 30px;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .main-title {
+          letter-spacing: -2px;
+        }
+
+        .event-card {
+          transform: none;
+        }
+
+        .promoter-grid,
+        .ticket-box {
+          grid-template-columns: 1fr;
+        }
+
+        .ticket-box {
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .container {
+          width: min(100% - 22px, 1120px);
+        }
+
+        header {
+          padding: 14px 0;
+        }
+
+        .brand-icon {
+          width: 54px;
+          height: 54px;
+          border-radius: 17px;
+        }
+
+        .brand-title {
+          font-size: 24px;
+          text-shadow: 2px 2px 0 var(--white);
+        }
+
+        .menu-btn {
+          padding: 13px 17px;
+        }
+
+        .hero {
+          padding-top: 28px;
+        }
+
+        .tag {
+          margin-bottom: 16px;
+        }
+
+        .main-title {
+          font-size: 56px;
+          text-shadow:
+            4px 4px 0 var(--black),
+            8px 8px 0 var(--red);
+        }
+
+        .festival {
+          font-size: 32px;
+        }
+
+        .hero-text {
+          font-size: 17px;
+        }
+
+        .hero-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .hero-actions .btn,
+        .hero-actions .btn.secondary {
+          width: 100%;
+          padding: 17px 18px;
+          font-size: 20px;
+          background: var(--red);
+          color: var(--white);
+          box-shadow: 7px 7px 0 var(--black);
+        }
+
+        .quick-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+          margin-top: 12px;
+        }
+
+        .quick-action-btn {
+          width: 100%;
+          padding: 14px 12px;
+          font-size: 16px;
+          box-shadow: 5px 5px 0 var(--red);
+        }
+
+        .poster-frame {
+          min-height: 360px;
+          padding: 18px;
+          gap: 20px;
+          justify-content: space-between;
+        }
+
+        .date {
+          font-size: 40px;
+        }
+
+        .countdown {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .section-title {
+          font-size: 43px;
+        }
+
+        .promoter h3 {
+          font-size: 34px;
+        }
+
+        .ticket-box::before,
+        .ticket-box::after,
+        .ticket-leaf {
+          width: 145px;
+          height: 72px;
+          opacity: 0.24;
+        }
+
+        .ticket-leaf-right {
+          right: -70px;
+          bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="noise"></div>
+    <div class="shape leaf one"></div>
+    <div class="shape leaf two"></div>
+    <div class="shape leaf three"></div>
+
+    <header>
+      <div class="container">
+        <nav class="nav">
+          <a href="#top" class="brand">
+            <div class="brand-icon"><span>✦</span></div>
+            <div class="brand-title">No Sleep In The City</div>
+          </a>
+
+          <div class="nav-links">
+            <a href="#promoters">Promóterek</a>
+            <a href="#lineup">Fellépők</a>
+            <a href="#tickets">Jegyek</a>
+          </div>
+
+          <button class="menu-btn" id="menuBtn">Menü</button>
+        </nav>
+
+        <div class="mobile-menu" id="mobileMenu">
           <a href="#promoters">Promóterek</a>
           <a href="#lineup">Fellépők</a>
           <a href="#tickets">Jegyek</a>
         </div>
-
-        <button class="menu-btn" id="menuBtn">Menü</button>
-      </nav>
-
-      <div class="mobile-menu" id="mobileMenu">
-        <a href="#promoters">Promóterek</a>
-        <a href="#lineup">Fellépők</a>
-        <a href="#tickets">Jegyek</a>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main id="top">
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <div class="tag">🔥 Open Air Festival</div>
-          <h1 class="main-title">No Sleep<br>In The City</h1>
-          <div class="festival">Jegyek promóterektől</div>
-
-          <p class="hero-text">
-            A jegyeket a lent található promótereknél tudod megvenni.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn" href="#promoters">🎟️ Promóterek</a>
-            <a class="btn secondary" href="#lineup">✨ Fellépők</a>
-          </div>
-
-          <div class="quick-actions">
-            <a
-              class="quick-action-btn"
-              href="https://www.google.com/maps/search/?api=1&query=Kiskunf%C3%A9legyh%C3%A1za%20Sportcsarnok%20parkol%C3%B3"
-              target="_blank"
-              rel="noopener"
-              data-track="map_opened"
-            >📍 Helyszín</a>
-
-            <button class="quick-action-btn" type="button" id="shareBtn" data-track="site_shared">
-              📲 Megosztás
-            </button>
-          </div>
-        </div>
-
-        <aside class="event-card">
-          <div class="poster-frame">
-            <div class="poster-top">
-              <div class="date">Június 19.<br>Péntek</div>
-              <div class="location">Kiskunfélegyháza // Sportcsarnok parkoló</div>
-            </div>
-
-            <div class="countdown" id="countdown">
-              <div class="time-box"><strong id="days">00</strong><small>nap</small></div>
-              <div class="time-box"><strong id="hours">00</strong><small>óra</small></div>
-              <div class="time-box"><strong id="mins">00</strong><small>perc</small></div>
-              <div class="time-box"><strong id="secs">00</strong><small>mp</small></div>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section id="promoters">
-      <div class="container">
-        <h2 class="section-title">Promóterek</h2>
-
-        <p class="section-sub">
-          Jegyet szeretnél? Írj rá az egyik promóterre Instagramon vagy Facebookon.
-          A gombok megnyitják a profilokat, a másolás gombok pedig kimásolják a nevet/handle-t.
-        </p>
-
-        <div class="ticket-types">
-          <strong>Elérhető jegyek:</strong>
-          <ul>
-            <li>Standard (egész este)</li>
-            <li>VIP</li>
-            <li>Backstage VIP (Csak a mi promotereinknél)</li>
-          </ul>
-        </div>
-
-        <div class="promoter-grid">
-          <article class="promoter">
-            <h3>Szedlacsek Tünde</h3>
-            <p>Jegyvásárlás Tündinél.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/_szdlcsk_?igsh=d2M0dzN2bmNkZW5p" target="_blank" rel="noopener" data-track="szedlacsek_tunde_instagram_clicked">
-                Instagram: @_szdlcsk_
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/19DGb8iH6p/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="szedlacsek_tunde_facebook_clicked">
-                Facebook: Tünde Szedlacsek
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@_szdlcsk_" data-track="szedlacsek_tunde_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Tünde Szedlacsek" data-track="szedlacsek_tunde_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Zelei Boldizsár</h3>
-            <p>Jegyvásárlás Boldizsárnál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/boldizelei?igsh=MTdoMXY5dGdwNjBydQ==" target="_blank" rel="noopener" data-track="zelei_boldizsar_instagram_clicked">
-                Instagram: @boldizelei
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/17tzEDwLp3/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="zelei_boldizsar_facebook_clicked">
-                Facebook: Zelei Boldizsár
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@boldizelei" data-track="zelei_boldizsar_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Zelei Boldizsár" data-track="zelei_boldizsar_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Csányi Réka</h3>
-            <p>Jegyvásárlás Rékánál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/reka_csanyi_?igsh=NjkzeWF6ODgyZ3I4" target="_blank" rel="noopener" data-track="csanyi_reka_instagram_clicked">
-                Instagram: @reka_csanyi_
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/1BvNv4wkCQ/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="csanyi_reka_facebook_clicked">
-                Facebook: Réka Csányi
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@reka_csanyi_" data-track="csanyi_reka_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Réka Csányi" data-track="csanyi_reka_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Bács Luca</h3>
-            <p>Jegyvásárlás Lucánál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/bacslucaa?igsh=OG41YnRyMHRhemdm" target="_blank" rel="noopener" data-track="bacs_luca_instagram_clicked">
-                Instagram: @bacslucaa
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/1SAxmugy8m/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="bacs_luca_facebook_clicked">
-                Facebook: Bács Luca
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@bacslucaa" data-track="bacs_luca_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Bács Luca" data-track="bacs_luca_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Juhász Dávid</h3>
-            <p>Jegyvásárlás Dávidnál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/david.juhasz560?igsh=MTBteDZpbjZzM3pvOA==" target="_blank" rel="noopener" data-track="juhasz_david_instagram_clicked">
-                Instagram: @david.juhasz560
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/18oawi8KYD/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="juhasz_david_facebook_clicked">
-                Facebook: Juhász Dávid
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@david.juhasz560" data-track="juhasz_david_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Juhász Dávid" data-track="juhasz_david_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Kovács Réka</h3>
-            <p>Jegyvásárlás Rékánál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/kovaacs.reka?igsh=bjlpanZzcWQwamhu" target="_blank" rel="noopener" data-track="kovacs_reka_instagram_clicked">
-                Instagram: @kovaacs.reka
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/1E3E23jqM1/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="kovacs_reka_facebook_clicked">
-                Facebook: Kovács Réka
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@kovaacs.reka" data-track="kovacs_reka_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Kovács Réka" data-track="kovacs_reka_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Kőrös Panna</h3>
-            <p>Jegyvásárlás Pannánál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/ks.panna?igsh=MWJ3dDMzY2Y2OXAxbg==" target="_blank" rel="noopener" data-track="koros_panna_instagram_clicked">
-                Instagram: @ks.panna
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/17zAGz3ewy/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="koros_panna_facebook_clicked">
-                Facebook: Kőrös Panna
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@ks.panna" data-track="koros_panna_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Kőrös Panna" data-track="koros_panna_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-
-          <article class="promoter">
-            <h3>Mészáros Marci</h3>
-            <p>Jegyvásárlás Marcinál.</p>
-
-            <div class="socials">
-              <a class="social-link" href="https://www.instagram.com/marci_2002?igsh=MWxmeWYzYnFzdTNvdA==" target="_blank" rel="noopener" data-track="meszaros_marci_instagram_clicked">
-                Instagram: @marci_2002
-                <span>↗</span>
-              </a>
-
-              <a class="social-link facebook" href="https://www.facebook.com/share/1J7qN2UNU8/?mibextid=wwXIfr" target="_blank" rel="noopener" data-track="meszaros_marci_facebook_clicked">
-                Facebook: Mészáros Marci
-                <span>↗</span>
-              </a>
-            </div>
-
-            <div class="copy-row">
-              <button class="copy-btn" data-copy="@marci_2002" data-track="meszaros_marci_instagram_copied">Insta másolása</button>
-              <button class="copy-btn" data-copy="Mészáros Marci" data-track="meszaros_marci_facebook_copied">Facebook név másolása</button>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="lineup">
-      <div class="container">
-        <h2 class="section-title">Fellépők</h2>
-
-        <div class="lineup-poster-wrap">
-          <img
-            class="lineup-poster"
-            src="./no_sleep_in_the_city_festival.png?v=2"
-            alt="No Sleep In The City fellépők plakát"
-          />
-        </div>
-      </div>
-    </section>
-
-    <section id="tickets">
-      <div class="container">
-        <div class="ticket-box">
-          <div class="ticket-leaf ticket-leaf-right" aria-hidden="true"></div>
-
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-grid">
           <div>
-            <h2>Jegyet szeretnél?</h2>
+            <div class="tag">🔥 Open Air Festival</div>
+            <h1 class="main-title">No Sleep<br />In The City</h1>
+            <div class="festival">Jegyek promóterektől</div>
 
-            <p>
-              Másold ki ezt az üzenetet és küldd el az egyik promoterünknek.
+            <p class="hero-text">
+              A jegyeket a lent található promótereknél tudod megvenni.
             </p>
 
-            <div class="message-template">
-              <div class="template-top">
-                <strong>Üzenet sablon</strong>
+            <div class="hero-actions">
+              <a class="btn" href="#promoters">🎟️ Promóterek</a>
+              <a class="btn secondary" href="#lineup">✨ Fellépők</a>
+            </div>
 
-                <button
-                  class="copy-btn"
-                  data-copy="Szia! No Sleep In The City jegyet szeretnék venni. Tudnál segíteni?"
-                  data-track="ticket_message_copied"
-                >
-                  Másolás
-                </button>
-              </div>
+            <div class="quick-actions">
+              <a
+                class="quick-action-btn"
+                href="https://www.google.com/maps/search/?api=1&query=Kiskunf%C3%A9legyh%C3%A1za%20Sportcsarnok%20parkol%C3%B3"
+                target="_blank"
+                rel="noopener"
+                data-track="map_opened"
+                >📍 Helyszín</a
+              >
 
-              Szia! No Sleep In The City jegyet szeretnék venni. Tudnál segíteni?
+              <button
+                class="quick-action-btn"
+                type="button"
+                id="shareBtn"
+                data-track="site_shared"
+              >
+                📲 Megosztás
+              </button>
             </div>
           </div>
 
-          <a class="btn" href="#promoters">Promóter választása</a>
+          <aside class="event-card">
+            <div class="poster-frame">
+              <div class="poster-top">
+                <div class="date">Június 19.<br />Péntek</div>
+                <div class="location">
+                  Kiskunfélegyháza // Sportcsarnok parkoló
+                </div>
+              </div>
+
+              <div class="countdown" id="countdown">
+                <div class="time-box">
+                  <strong id="days">00</strong><small>nap</small>
+                </div>
+                <div class="time-box">
+                  <strong id="hours">00</strong><small>óra</small>
+                </div>
+                <div class="time-box">
+                  <strong id="mins">00</strong><small>perc</small>
+                </div>
+                <div class="time-box">
+                  <strong id="secs">00</strong><small>mp</small>
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <footer>
-    No Sleep In The City • Június 19. • Kiskunfélegyháza
-  </footer>
+      <section id="promoters">
+        <div class="container">
+          <h2 class="section-title">Promóterek</h2>
 
-  <div class="toast" id="toast">Kimásolva ✅</div>
+          <p class="section-sub">
+            Jegyet szeretnél? Írj rá az egyik promóterre Instagramon vagy
+            Facebookon. A gombok megnyitják a profilokat, a másolás gombok pedig
+            kimásolják a nevet/handle-t.
+          </p>
 
-  <script>
-    const menuBtn = document.getElementById("menuBtn");
-    const mobileMenu = document.getElementById("mobileMenu");
-    const toast = document.getElementById("toast");
-    const shareBtn = document.getElementById("shareBtn");
+          <div class="ticket-types">
+            <strong>Elérhető jegyek:</strong>
+            <ul>
+              <li>Standard (egész este)</li>
+              <li>VIP</li>
+              <li>Backstage VIP (Csak a mi promotereinknél)</li>
+            </ul>
+          </div>
 
-    menuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("open");
-    });
+          <div class="promoter-grid">
+            <article class="promoter">
+              <h3>Szedlacsek Tünde</h3>
+              <p>Jegyvásárlás Tündinél.</p>
 
-    document.querySelectorAll(".mobile-menu a").forEach(link => {
-      link.addEventListener("click", () => {
-        mobileMenu.classList.remove("open");
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/_szdlcsk_?igsh=d2M0dzN2bmNkZW5p"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="szedlacsek_tunde_instagram_clicked"
+                >
+                  Instagram: @_szdlcsk_
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/19DGb8iH6p/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="szedlacsek_tunde_facebook_clicked"
+                >
+                  Facebook: Tünde Szedlacsek
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@_szdlcsk_"
+                  data-track="szedlacsek_tunde_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Tünde Szedlacsek"
+                  data-track="szedlacsek_tunde_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Zelei Boldizsár</h3>
+              <p>Jegyvásárlás Boldizsárnál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/boldizelei?igsh=MTdoMXY5dGdwNjBydQ=="
+                  target="_blank"
+                  rel="noopener"
+                  data-track="zelei_boldizsar_instagram_clicked"
+                >
+                  Instagram: @boldizelei
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/17tzEDwLp3/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="zelei_boldizsar_facebook_clicked"
+                >
+                  Facebook: Zelei Boldizsár
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@boldizelei"
+                  data-track="zelei_boldizsar_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Zelei Boldizsár"
+                  data-track="zelei_boldizsar_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Csányi Réka</h3>
+              <p>Jegyvásárlás Rékánál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/reka_csanyi_?igsh=NjkzeWF6ODgyZ3I4"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="csanyi_reka_instagram_clicked"
+                >
+                  Instagram: @reka_csanyi_
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/1BvNv4wkCQ/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="csanyi_reka_facebook_clicked"
+                >
+                  Facebook: Réka Csányi
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@reka_csanyi_"
+                  data-track="csanyi_reka_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Réka Csányi"
+                  data-track="csanyi_reka_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Bács Luca</h3>
+              <p>Jegyvásárlás Lucánál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/bacslucaa?igsh=OG41YnRyMHRhemdm"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="bacs_luca_instagram_clicked"
+                >
+                  Instagram: @bacslucaa
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/1SAxmugy8m/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="bacs_luca_facebook_clicked"
+                >
+                  Facebook: Bács Luca
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@bacslucaa"
+                  data-track="bacs_luca_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Bács Luca"
+                  data-track="bacs_luca_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Juhász Dávid</h3>
+              <p>Jegyvásárlás Dávidnál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/david.juhasz560?igsh=MTBteDZpbjZzM3pvOA=="
+                  target="_blank"
+                  rel="noopener"
+                  data-track="juhasz_david_instagram_clicked"
+                >
+                  Instagram: @david.juhasz560
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/18oawi8KYD/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="juhasz_david_facebook_clicked"
+                >
+                  Facebook: Juhász Dávid
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@david.juhasz560"
+                  data-track="juhasz_david_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Juhász Dávid"
+                  data-track="juhasz_david_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Kovács Réka</h3>
+              <p>Jegyvásárlás Rékánál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/kovaacs.reka?igsh=bjlpanZzcWQwamhu"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="kovacs_reka_instagram_clicked"
+                >
+                  Instagram: @kovaacs.reka
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/1E3E23jqM1/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="kovacs_reka_facebook_clicked"
+                >
+                  Facebook: Kovács Réka
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@kovaacs.reka"
+                  data-track="kovacs_reka_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Kovács Réka"
+                  data-track="kovacs_reka_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Kőrös Panna</h3>
+              <p>Jegyvásárlás Pannánál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/ks.panna?igsh=MWJ3dDMzY2Y2OXAxbg=="
+                  target="_blank"
+                  rel="noopener"
+                  data-track="koros_panna_instagram_clicked"
+                >
+                  Instagram: @ks.panna
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/17zAGz3ewy/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="koros_panna_facebook_clicked"
+                >
+                  Facebook: Kőrös Panna
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@ks.panna"
+                  data-track="koros_panna_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Kőrös Panna"
+                  data-track="koros_panna_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+
+            <article class="promoter">
+              <h3>Mészáros Marci</h3>
+              <p>Jegyvásárlás Marcinál.</p>
+
+              <div class="socials">
+                <a
+                  class="social-link"
+                  href="https://www.instagram.com/marci_2002?igsh=MWxmeWYzYnFzdTNvdA=="
+                  target="_blank"
+                  rel="noopener"
+                  data-track="meszaros_marci_instagram_clicked"
+                >
+                  Instagram: @marci_2002
+                  <span>↗</span>
+                </a>
+
+                <a
+                  class="social-link facebook"
+                  href="https://www.facebook.com/share/1J7qN2UNU8/?mibextid=wwXIfr"
+                  target="_blank"
+                  rel="noopener"
+                  data-track="meszaros_marci_facebook_clicked"
+                >
+                  Facebook: Mészáros Marci
+                  <span>↗</span>
+                </a>
+              </div>
+
+              <div class="copy-row">
+                <button
+                  class="copy-btn"
+                  data-copy="@marci_2002"
+                  data-track="meszaros_marci_instagram_copied"
+                >
+                  Insta másolása
+                </button>
+                <button
+                  class="copy-btn"
+                  data-copy="Mészáros Marci"
+                  data-track="meszaros_marci_facebook_copied"
+                >
+                  Facebook név másolása
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="lineup">
+        <div class="container">
+          <h2 class="section-title">Fellépők</h2>
+
+          <div class="lineup-poster-wrap">
+            <img
+              class="lineup-poster"
+              src="./no_sleep_in_the_city_festival.png?v=2"
+              alt="No Sleep In The City fellépők plakát"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="tickets">
+        <div class="container">
+          <div class="ticket-box">
+            <div class="ticket-leaf ticket-leaf-right" aria-hidden="true"></div>
+
+            <div>
+              <h2>Jegyet szeretnél?</h2>
+
+              <p>
+                Másold ki ezt az üzenetet és küldd el az egyik promoterünknek.
+              </p>
+
+              <div class="message-template">
+                <div class="template-top">
+                  <strong>Üzenet sablon</strong>
+
+                  <button
+                    class="copy-btn"
+                    data-copy="Szia! No Sleep In The City jegyet szeretnék venni. Tudnál segíteni?"
+                    data-track="ticket_message_copied"
+                  >
+                    Másolás
+                  </button>
+                </div>
+
+                Szia! No Sleep In The City jegyet szeretnék venni. Tudnál
+                segíteni?
+              </div>
+            </div>
+
+            <a class="btn" href="#promoters">Promóter választása</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>No Sleep In The City • Június 19. • Kiskunfélegyháza</footer>
+
+    <div class="toast" id="toast">Kimásolva ✅</div>
+
+    <script>
+      const menuBtn = document.getElementById("menuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const toast = document.getElementById("toast");
+      const shareBtn = document.getElementById("shareBtn");
+
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("open");
       });
-    });
 
-    function showToast(text = "Kimásolva ✅"){
-      toast.textContent = text;
-      toast.classList.add("show");
+      document.querySelectorAll(".mobile-menu a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.remove("open");
+        });
+      });
 
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 1800);
-    }
+      function showToast(text = "Kimásolva ✅") {
+        toast.textContent = text;
+        toast.classList.add("show");
 
-    function track(action){
-      if(window.umami){
-        window.umami.track(action);
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 1800);
       }
 
-      console.log("Tracking ready:", action);
-    }
-
-    let hasTrackedScroll = false;
-
-    window.addEventListener("scroll", () => {
-      if(!hasTrackedScroll){
-        hasTrackedScroll = true;
-        track("real_scroll");
-      }
-    }, { passive: true });
-
-    document.querySelectorAll("[data-track]").forEach(element => {
-      element.addEventListener("click", () => {
-        track(element.getAttribute("data-track"));
-      });
-    });
-
-    document.querySelectorAll("[data-copy]").forEach(button => {
-      button.addEventListener("click", async () => {
-        const text = button.getAttribute("data-copy");
-
-        try{
-          await navigator.clipboard.writeText(text);
-          showToast("Kimásolva: " + text);
-        }catch(error){
-          showToast("Másolás nem sikerült");
+      function track(action) {
+        if (window.umami) {
+          window.umami.track(action);
         }
-      });
-    });
 
-    if(shareBtn){
-      shareBtn.addEventListener("click", async () => {
-        const shareData = {
-          title: "No Sleep In The City",
-          text: "No Sleep In The City • Június 19. • Kiskunfélegyháza, Sportcsarnok parkoló • Jegyek promótereknél",
-          url: window.location.href
-        };
-
-        if(navigator.share){
-          try{
-            await navigator.share(shareData);
-            showToast("Megosztás megnyitva 📲");
-          }catch(error){
-            showToast("Megosztás megszakítva");
-          }
-        }else{
-          try{
-            await navigator.clipboard.writeText(window.location.href);
-            showToast("Link kimásolva ✅");
-          }catch(error){
-            showToast("Megosztás nem sikerült");
-          }
-        }
-      });
-    }
-
-    const eventDate = new Date("2026-06-19T20:00:00+02:00").getTime();
-
-    const daysEl = document.getElementById("days");
-    const hoursEl = document.getElementById("hours");
-    const minsEl = document.getElementById("mins");
-    const secsEl = document.getElementById("secs");
-
-    function updateCountdown(){
-      const now = new Date().getTime();
-      const distance = eventDate - now;
-
-      if(distance <= 0){
-        daysEl.textContent = "00";
-        hoursEl.textContent = "00";
-        minsEl.textContent = "00";
-        secsEl.textContent = "00";
-        return;
+        console.log("Tracking ready:", action);
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-      const mins = Math.floor((distance / (1000 * 60)) % 60);
-      const secs = Math.floor((distance / 1000) % 60);
+      let hasTrackedScroll = false;
 
-      daysEl.textContent = String(days).padStart(2, "0");
-      hoursEl.textContent = String(hours).padStart(2, "0");
-      minsEl.textContent = String(mins).padStart(2, "0");
-      secsEl.textContent = String(secs).padStart(2, "0");
-    }
+      window.addEventListener(
+        "scroll",
+        () => {
+          if (!hasTrackedScroll) {
+            hasTrackedScroll = true;
+            track("real_scroll");
+          }
+        },
+        { passive: true },
+      );
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-  </script>
-</body>
+      document.querySelectorAll("[data-track]").forEach((element) => {
+        element.addEventListener("click", () => {
+          track(element.getAttribute("data-track"));
+        });
+      });
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const text = button.getAttribute("data-copy");
+
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast("Kimásolva: " + text);
+          } catch (error) {
+            showToast("Másolás nem sikerült");
+          }
+        });
+      });
+
+      if (shareBtn) {
+        shareBtn.addEventListener("click", async () => {
+          const shareData = {
+            title: "No Sleep In The City",
+            text: "No Sleep In The City • Június 19. • Kiskunfélegyháza, Sportcsarnok parkoló • Jegyek promótereknél",
+            url: window.location.href,
+          };
+
+          if (navigator.share) {
+            try {
+              await navigator.share(shareData);
+              showToast("Megosztás megnyitva 📲");
+            } catch (error) {
+              showToast("Megosztás megszakítva");
+            }
+          } else {
+            try {
+              await navigator.clipboard.writeText(window.location.href);
+              showToast("Link kimásolva ✅");
+            } catch (error) {
+              showToast("Megosztás nem sikerült");
+            }
+          }
+        });
+      }
+
+      const eventDate = new Date("2026-06-19T20:00:00+02:00").getTime();
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minsEl = document.getElementById("mins");
+      const secsEl = document.getElementById("secs");
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = eventDate - now;
+
+        if (distance <= 0) {
+          daysEl.textContent = "00";
+          hoursEl.textContent = "00";
+          minsEl.textContent = "00";
+          secsEl.textContent = "00";
+          return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const mins = Math.floor((distance / (1000 * 60)) % 60);
+        const secs = Math.floor((distance / 1000) % 60);
+
+        daysEl.textContent = String(days).padStart(2, "0");
+        hoursEl.textContent = String(hours).padStart(2, "0");
+        minsEl.textContent = String(mins).padStart(2, "0");
+        secsEl.textContent = String(secs).padStart(2, "0");
+      }
+
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    </script>
+  </body>
 </html>
